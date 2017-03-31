@@ -12,12 +12,25 @@ var cylB = 10;
 var cylHeight = 200;
 var threeView;
 
+var material1 = new THREE.MeshLambertMaterial({
+    shading: THREE.FlatShading,
+    color: 0xff00ff,
+    side: THREE.DoubleSide
+});
+var material2 = new THREE.MeshLambertMaterial({
+    shading: THREE.FlatShading,
+    color: 0x00ffff,
+    side: THREE.DoubleSide
+});
+
 var cylinder;
 
 var plane;
 var planeNormal;
 
 var pts;
+
+var unwrappedPts;
 
 $(function() {
 
@@ -48,10 +61,16 @@ function clear(){
 
     if (pts){
         _.each(pts, function(pt){
-            threeView.scene.remove(pt);
+            threeView.scene2.remove(pt);
         });
     }
     pts = [];
+    if (unwrappedPts){
+        _.each(unwrappedPts, function(pt){
+            threeView.scene2.remove(pt);
+        });
+    }
+    unwrappedPts = [];
 }
 
 function updateIntersection(){
@@ -64,6 +83,23 @@ function updateIntersection(){
         var pt = pts[i];
         pt.scale.set(ptScale, ptScale, ptScale);
         pt.position.set(cylA*Math.cos(theta), cylB*Math.sin(theta), (planeNormal.x*cylA*Math.cos(theta) - planeNormal.y*cylB*Math.sin(theta))/planeNormal.z);
+    }
+
+    var xPos = 0;
+    for (var i=0;i<thetaNum;i++){
+        var theta = i/thetaNum*Math.PI*2;
+        var pt = unwrappedPts[i];
+        pt.scale.set(ptScale, ptScale, ptScale);
+
+        //The arc length of an ellipse, in general, has no closed-form solution in terms of elementary functions
+        //for circle, arc length = Math.PI*2/thetaNum * r
+        if (i>0) {
+            var vect = pts[i].position.clone().sub(pts[i-1].position);
+            vect.z = 0;
+            xPos += vect.length();
+        }
+
+        pt.position.set(xPos, 0, (planeNormal.x*cylA*Math.cos(theta) - planeNormal.y*cylB*Math.sin(theta))/planeNormal.z);
     }
 
     threeView.render();
@@ -104,11 +140,7 @@ function initCylinder() {
     }
     cylGeo.computeFaceNormals();
 
-    cylinder = new THREE.Mesh(cylGeo, new THREE.MeshLambertMaterial({
-        shading: THREE.FlatShading,
-        color: 0xff00ff,
-        side: THREE.DoubleSide
-    }));
+    cylinder = new THREE.Mesh(cylGeo, material1);
 
     threeView.scene.add(cylinder);
 }
@@ -116,7 +148,7 @@ function initCylinder() {
 function initPlane() {
 
     var planeGeo = new THREE.PlaneGeometry(1, 1);
-    plane = new THREE.Mesh(planeGeo, new THREE.MeshLambertMaterial({color: 0x000000, side: THREE.DoubleSide}));
+    plane = new THREE.Mesh(planeGeo, material2);
     plane.rotation.x = planeAngle;
     threeView.scene.add(plane);
 }
@@ -130,6 +162,14 @@ function initIntersection(){
     for (var i=0;i<thetaNum;i++){
         var pt = new THREE.Mesh(sphereGeo, sphereMat);
         pts.push(pt);
-        threeView.scene.add(pt);
+        threeView.scene2.add(pt);
+    }
+
+    unwrappedPts = [];
+    var sphereMat = new THREE.MeshBasicMaterial({color:0xff0000});
+    for (var i=0;i<thetaNum;i++){
+        var pt = new THREE.Mesh(sphereGeo, sphereMat);
+        unwrappedPts.push(pt);
+        threeView.scene2.add(pt);
     }
 }
