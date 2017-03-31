@@ -5,18 +5,40 @@
 
 function initControls(){
 
+    setSliderInput("#thetaNum", thetaNum, 10, 400, 1, function(val){
+        thetaNum = val;
+        clear();
+        initCylinder();
+        initPlane();
+        initIntersection();
+        updateIntersection();
+    });
+    setSliderInput("#ptScale", ptScale, 0.1, 1, 0.1, function(val){
+        ptScale = val;
+        updateIntersection();
+    });
+
     setSliderInput("#cylinderA", cylA, 0.1, 50, 0.1, function(val){
         cylA = val;
-        updateCylinder();
+        updateIntersection();
     });
     setSliderInput("#cylinderB", cylB, 0.1, 50, 0.1, function(val){
         cylB = val;
-        updateCylinder();
+        updateIntersection();
     });
+    setSliderInput("#cylinderHeight", cylHeight, 100, 500, 1, function(val){
+        cylHeight = val;
+        updateIntersection();
+    });
+
 
     setSliderInput("#planeAngle", planeAngle, 0.0, Math.PI*2, 0.1, function(val){
         planeAngle = val;
-        updateCylinder();
+        updateIntersection();
+    });
+    setSliderInput("#planeSize", planeSize, 100, 1000, 1, function(val){
+        planeSize = val;
+        updateIntersection();
     });
 
 
