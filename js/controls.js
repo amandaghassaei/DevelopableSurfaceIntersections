@@ -32,7 +32,7 @@ function initControls(){
     });
 
 
-    setSliderInput("#planeAngle", planeAngle, 0.0, Math.PI*2, 0.1, function(val){
+    setSliderInput("#planeAngle", planeAngle, 0.0, Math.PI, 0.1, function(val){
         planeAngle = val;
         updateIntersection();
     });
