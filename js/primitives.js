@@ -6,7 +6,6 @@
 function Plane(){
     var planeGeo = new THREE.PlaneGeometry(1, 1);
     var plane = new THREE.Mesh(planeGeo, material2);
-    plane.rotation.x = planeAngle;
     threeView.scene.add(plane);
     this.object3D = plane;
 }

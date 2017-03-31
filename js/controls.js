@@ -14,31 +14,39 @@ function initControls(){
         updateIntersection();
     });
 
-    setSliderInput("#cylinderA", cylA2, 0.1, 50, 0.1, function(val){
+    setSliderInput("#cylinderA2", cylA2, 0.1, 50, 0.1, function(val){
         cylA2 = val;
         updateIntersection();
     });
-    setSliderInput("#cylinderB", cylB2, 0.1, 50, 0.1, function(val){
+    setSliderInput("#cylinderB2", cylB2, 0.1, 50, 0.1, function(val){
         cylB2 = val;
         updateIntersection();
     });
-    setSliderInput("#cylinderHeight", cylHeight2, 100, 500, 1, function(val){
+    setSliderInput("#cylinderHeight2", cylHeight2, 100, 500, 1, function(val){
         cylHeight2 = val;
         updateIntersection();
     });
 
 
-    setSliderInput("#planeAngle", planeAngle1, 0.0, Math.PI, 0.1, function(val){
+    setSliderInput("#planeAngle1", planeAngle1, 0.0, Math.PI, 0.1, function(val){
         planeAngle1 = val;
         updateIntersection();
     });
-    setSliderInput("#planeSize", planeSize1, 100, 1000, 1, function(val){
+    setSliderInput("#planeSize1", planeSize1, 100, 1000, 1, function(val){
         planeSize1 = val;
         updateIntersection();
     });
 
     setRadio("geo1", geo1, function(val){
         geo1 = val;
+        clear();
+        if (val == "plane"){
+
+        }
+    });
+
+    setRadio("geo2", geo2, function(val){
+        geo2 = val;
         clear();
         if (val == "plane"){
 
@@ -70,7 +78,7 @@ function initControls(){
             var state = $("input[name="+name+"]:checked").val();
             callback(state);
         });
-        $(".radio>input[value="+val+"]").prop("checked", true);
+        $(".radio>input[name="+name+"][value="+val+"]").prop("checked", true);
     }
 
     function setInput(id, val, callback, min, max){

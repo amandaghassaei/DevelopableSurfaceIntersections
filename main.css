@@ -108,6 +108,11 @@ input.form-control {
     display: inline-block;
 }
 
+.radio, .checkbox{
+    display: inline-block;
+    padding-right: 30px;
+}
+
 .radioSlider{
     display: inline-block;
     float:right;

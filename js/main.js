@@ -8,6 +8,9 @@ var ptScale = 0.5;
 var planeAngle1 = 0.8;
 var planeSize1 = 500;
 
+var planeAngle2 = planeAngle1;
+var planeSize2 = planeSize1;
+
 
 var cylA2 = 16;
 var cylB2 = 10;
@@ -50,12 +53,18 @@ $(function() {
 });
 
 function initGeos(){
+    $("#plane1").hide();
+    $("#plane2").hide();
+    $("#cylinder2").hide();
+
     clear();
     geos = [];
     if (geo1 == "plane") {
+        $("#plane1").show();
         geos.push(new Plane());
     }
     if (geo2 == "cylinder") {
+        $("#cylinder2").show();
         geos.push(new Cylinder());
     }
     initIntersection();
@@ -86,11 +95,12 @@ function clear(){
 
 function updateIntersection(){
 
-    geos[0].update(planeAngle1, planeSize1);
-    geos[1].update(cylA2, cylB2, cylHeight2);
+
 
     if (geo1 == "plane"){
+        geos[0].update(planeAngle1, planeSize1);
         if (geo2 == "cylinder"){
+            geos[1].update(cylA2, cylB2, cylHeight2);
             intersectPlaneCyl(geos[0].getNormal());
         }
     }
