@@ -79,7 +79,7 @@ function drawCylinder(){
     var planeNormal = new THREE.Vector3(0,0,1);
     planeNormal.applyEuler(plane.rotation);
 
-    var sphereGeo = new THREE.SphereGeometry(0.1);
+    var sphereGeo = new THREE.SphereGeometry(0.4);
     var sphereMat = new THREE.MeshBasicMaterial({color:0x00ff00});
     for (var i=0;i<thetaNum;i++){
         var theta = i/thetaNum*Math.PI*2;
