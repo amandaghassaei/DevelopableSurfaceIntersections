@@ -12,6 +12,9 @@ var cylB = 10;
 var cylHeight = 200;
 var threeView;
 
+var geo1 = "plane";
+var geo2 = "cylinder";
+
 var material1 = new THREE.MeshLambertMaterial({
     shading: THREE.FlatShading,
     color: 0xff00ff,
@@ -23,10 +26,8 @@ var material2 = new THREE.MeshLambertMaterial({
     side: THREE.DoubleSide
 });
 
-var cylinder;
 
-var plane;
-var planeNormal;
+var geos;
 
 var pts;
 
@@ -41,23 +42,26 @@ $(function() {
         threeView.onWindowResize();
     }, false);
 
-    initCylinder();
-    initPlane();
+
+    initGeos();
+});
+
+function initGeos(){
+    clear();
+    geos = [];
+    if (geo1 == "plane") geos.push(new Plane());
+    if (geo2 == "cylinder") geos.push(new Cylinder());
     initIntersection();
     updateIntersection()
-
-});
+}
 
 function clear(){
 
-    if (plane) {
-        threeView.scene.remove(plane);
-        plane = null;
+    if (geos && geos.length > 0){
+        geos[0].destroy();
+        geos[1].destroy();
     }
-    if (cylinder) {
-        threeView.scene.remove(cylinder);
-        cylinder = null;
-    }
+
 
     if (pts){
         _.each(pts, function(pt){
@@ -75,8 +79,10 @@ function clear(){
 
 function updateIntersection(){
 
-    updateCylinder();
-    updatePlane();
+    geos[0].update();
+    geos[1].update();
+
+    var planeNormal = geos[0].getNormal();
 
     for (var i=0;i<thetaNum;i++){
         var theta = i/thetaNum*Math.PI*2;
@@ -103,54 +109,6 @@ function updateIntersection(){
     }
 
     threeView.render();
-}
-
-function updatePlane(){
-    plane.scale.set(planeSize, planeSize, 1);
-    plane.rotation.x = planeAngle;
-    planeNormal = new THREE.Vector3(0,0,1);
-    planeNormal.applyEuler(plane.rotation);
-}
-
-function updateCylinder(){
-    var cylGeo = cylinder.geometry;
-    for (var i=0;i<thetaNum;i++){
-        var theta = i/thetaNum*Math.PI*2;
-        cylGeo.vertices[2*i].set(cylA*Math.cos(theta), cylB*Math.sin(theta), -cylHeight/2);
-        cylGeo.vertices[2*i+1].set(cylA*Math.cos(theta), cylB*Math.sin(theta), cylHeight/2);
-    }
-    cylGeo.computeFaceNormals();
-    cylGeo.verticesNeedUpdate = true;
-}
-
-function initCylinder() {
-    var cylGeo = new THREE.Geometry();
-    cylGeo.dynamic = true;
-    for (var i = 0; i < thetaNum; i++) {
-        cylGeo.vertices.push(new THREE.Vector3());
-        cylGeo.vertices.push(new THREE.Vector3());
-        if (i < thetaNum - 1) {
-            cylGeo.faces.push(new THREE.Face3(2 * i, 2 * i + 2, 2 * i + 1));
-            cylGeo.faces.push(new THREE.Face3(2 * i + 2, 2 * i + 1, 2 * i + 3));
-        } else {
-            cylGeo.faces.push(new THREE.Face3(2 * i, 0, 2 * i + 1));
-            cylGeo.faces.push(new THREE.Face3(2 * i + 1, 0, 1));
-        }
-
-    }
-    cylGeo.computeFaceNormals();
-
-    cylinder = new THREE.Mesh(cylGeo, material1);
-
-    threeView.scene.add(cylinder);
-}
-
-function initPlane() {
-
-    var planeGeo = new THREE.PlaneGeometry(1, 1);
-    plane = new THREE.Mesh(planeGeo, material2);
-    plane.rotation.x = planeAngle;
-    threeView.scene.add(plane);
 }
 
 function initIntersection(){

@@ -7,11 +7,7 @@ function initControls(){
 
     setSliderInput("#thetaNum", thetaNum, 10, 400, 1, function(val){
         thetaNum = val;
-        clear();
-        initCylinder();
-        initPlane();
-        initIntersection();
-        updateIntersection();
+        initGeos();
     });
     setSliderInput("#ptScale", ptScale, 0.1, 1, 0.1, function(val){
         ptScale = val;
@@ -39,6 +35,14 @@ function initControls(){
     setSliderInput("#planeSize", planeSize, 100, 1000, 1, function(val){
         planeSize = val;
         updateIntersection();
+    });
+
+    setRadio("geo1", geo1, function(val){
+        geo1 = val;
+        clear();
+        if (val == "plane"){
+
+        }
     });
 
 
