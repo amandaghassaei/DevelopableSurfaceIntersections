@@ -5,11 +5,15 @@
 var thetaNum = 100;
 var ptScale = 0.5;
 
-var planeAngle = 0.8;
-var planeSize = 500;
-var cylA = 16;
-var cylB = 10;
-var cylHeight = 200;
+var planeAngle1 = 0.8;
+var planeSize1 = 500;
+
+
+var cylA2 = 16;
+var cylB2 = 10;
+var cylHeight2 = 200;
+
+
 var threeView;
 
 var geo1 = "plane";
@@ -28,7 +32,6 @@ var material2 = new THREE.MeshLambertMaterial({
 
 
 var geos;
-
 var pts;
 
 var unwrappedPts;
@@ -49,8 +52,12 @@ $(function() {
 function initGeos(){
     clear();
     geos = [];
-    if (geo1 == "plane") geos.push(new Plane());
-    if (geo2 == "cylinder") geos.push(new Cylinder());
+    if (geo1 == "plane") {
+        geos.push(new Plane());
+    }
+    if (geo2 == "cylinder") {
+        geos.push(new Cylinder());
+    }
     initIntersection();
     updateIntersection()
 }
@@ -79,21 +86,30 @@ function clear(){
 
 function updateIntersection(){
 
-    geos[0].update();
-    geos[1].update();
+    geos[0].update(planeAngle1, planeSize1);
+    geos[1].update(cylA2, cylB2, cylHeight2);
 
-    var planeNormal = geos[0].getNormal();
+    if (geo1 == "plane"){
+        if (geo2 == "cylinder"){
+            intersectPlaneCyl(geos[0].getNormal());
+        }
+    }
 
+
+
+    threeView.render();
+}
+
+function intersectPlaneCyl(planeNormal){
     for (var i=0;i<thetaNum;i++){
         var theta = i/thetaNum*Math.PI*2;
         var pt = pts[i];
         pt.scale.set(ptScale, ptScale, ptScale);
-        pt.position.set(cylA*Math.cos(theta), cylB*Math.sin(theta), (planeNormal.x*cylA*Math.cos(theta) - planeNormal.y*cylB*Math.sin(theta))/planeNormal.z);
+        pt.position.set(cylA2*Math.cos(theta), cylB2*Math.sin(theta), (planeNormal.x*cylA2*Math.cos(theta) - planeNormal.y*cylB2*Math.sin(theta))/planeNormal.z);
     }
 
     var xPos = 0;
     for (var i=0;i<thetaNum;i++){
-        var theta = i/thetaNum*Math.PI*2;
         var pt = unwrappedPts[i];
         pt.scale.set(ptScale, ptScale, ptScale);
 
@@ -105,10 +121,8 @@ function updateIntersection(){
             xPos += vect.length();
         }
 
-        pt.position.set(xPos, 0, (planeNormal.x*cylA*Math.cos(theta) - planeNormal.y*cylB*Math.sin(theta))/planeNormal.z);
+        pt.position.set(xPos, 0, pts[i].position.z);
     }
-
-    threeView.render();
 }
 
 function initIntersection(){

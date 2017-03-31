@@ -14,26 +14,26 @@ function initControls(){
         updateIntersection();
     });
 
-    setSliderInput("#cylinderA", cylA, 0.1, 50, 0.1, function(val){
-        cylA = val;
+    setSliderInput("#cylinderA", cylA2, 0.1, 50, 0.1, function(val){
+        cylA2 = val;
         updateIntersection();
     });
-    setSliderInput("#cylinderB", cylB, 0.1, 50, 0.1, function(val){
-        cylB = val;
+    setSliderInput("#cylinderB", cylB2, 0.1, 50, 0.1, function(val){
+        cylB2 = val;
         updateIntersection();
     });
-    setSliderInput("#cylinderHeight", cylHeight, 100, 500, 1, function(val){
-        cylHeight = val;
+    setSliderInput("#cylinderHeight", cylHeight2, 100, 500, 1, function(val){
+        cylHeight2 = val;
         updateIntersection();
     });
 
 
-    setSliderInput("#planeAngle", planeAngle, 0.0, Math.PI, 0.1, function(val){
-        planeAngle = val;
+    setSliderInput("#planeAngle", planeAngle1, 0.0, Math.PI, 0.1, function(val){
+        planeAngle1 = val;
         updateIntersection();
     });
-    setSliderInput("#planeSize", planeSize, 100, 1000, 1, function(val){
-        planeSize = val;
+    setSliderInput("#planeSize", planeSize1, 100, 1000, 1, function(val){
+        planeSize1 = val;
         updateIntersection();
     });
 

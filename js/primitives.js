@@ -11,7 +11,7 @@ function Plane(){
     this.object3D = plane;
 }
 
-Plane.prototype.update = function(){
+Plane.prototype.update = function(planeAngle, planeSize){
     var plane = this.object3D;
     plane.scale.set(planeSize, planeSize, 1);
     plane.rotation.x = planeAngle;
@@ -53,7 +53,7 @@ function Cylinder(){
     threeView.scene.add(cylinder);
 }
 
-Cylinder.prototype.update = function(){
+Cylinder.prototype.update = function(cylA, cylB, cylHeight){
     var cylGeo = this.object3D.geometry;
     for (var i=0;i<thetaNum;i++){
         var theta = i/thetaNum*Math.PI*2;
