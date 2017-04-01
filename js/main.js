@@ -13,14 +13,28 @@ var planeSize2 = planeSize1;
 
 
 //cylinder params
-var cylA1 = 16;
-var cylB1 = 10;
+var cylA1 = 20;
+var cylB1 = cylA1;
+var cylPhase1 = 0;
 var cylHeight1 = 200;
 var cylA2 = cylA1;
 var cylB2 = cylB1;
+var cylPhase2 = cylPhase1;
 var cylHeight2 = cylHeight1;
 var cylX2 = 0;//x offset
 
+//cone params
+var coneA1 = 20;
+var coneB1 = coneA1;
+var conePhase1 = 0;
+var coneHeight1 = 200;
+var coneZ1 = 0;//y offset
+var coneA2 = coneA1;
+var coneB2 = coneB1;
+var conePhase2 = conePhase1;
+var coneHeight2 = coneHeight1;
+var coneX2 = 0;//x offset
+var coneZ2 = 0;//y offset
 
 var threeView;
 
@@ -62,6 +76,8 @@ function initGeos(){
     $("#plane2").hide();
     $("#cylinder1").hide();
     $("#cylinder2").hide();
+    $("#cone1").hide();
+    $("#cone2").hide();
 
     clear();
     geos = [];
@@ -73,6 +89,10 @@ function initGeos(){
         $("#cylinder1").show();
         geos.push(new Cylinder(material1));
     }
+    if (geo1 == "cone") {
+        $("#cone1").show();
+        geos.push(new Cone(material1));
+    }
 
     if (geo2 == "plane") {
         $("#plane2").show();
@@ -81,6 +101,10 @@ function initGeos(){
     if (geo2 == "cylinder") {
         $("#cylinder2").show();
         geos.push(new Cylinder(material2));
+    }
+    if (geo2 == "cone") {
+        $("#cone2").show();
+        geos.push(new Cone(material2));
     }
 
     initIntersection();
@@ -122,15 +146,30 @@ function updateIntersection(){
     //     }
     // } else
     if (geo1 == "cylinder"){
-        geos[0].update(cylA1, cylB1, cylHeight1);
+        geos[0].update(cylA1, cylB1, cylPhase1, cylHeight1);
         if (geo2 == "plane"){
             geos[1].update(planeSize2, angle);
-            geos[0].intersectPlane(geos[1].getNormal(), cylA1, cylB1, pts);
+            geos[0].intersectPlane(geos[1].getNormal(), cylA1, cylB1, cylPhase1, pts);
             geos[0].unwrapPts(pts, unwrappedPts);
         } else if (geo2 == "cylinder"){
-            geos[1].update(cylA2, cylB2, cylHeight2, angle, cylX2);
-            geos[0].intersectCylinder(cylA1, cylB1, cylA2, cylB2, cylX2, pts);
+            geos[1].update(cylA2, cylB2, cylPhase2, cylHeight2, angle, cylX2);
+            geos[0].intersectCylinder(cylA1, cylB1, cylPhase1, cylA2, cylB2, cylPhase2, cylX2, pts);
             geos[0].unwrapPts(pts, unwrappedPts);
+        } else if (geo2 == "cone"){
+            geos[1].update(coneA2, coneB2, conePhase2, coneHeight2, coneZ2, angle, coneX2);
+        }
+    } else if (geo1 == "cone"){
+        geos[0].update(coneA1, coneB1, conePhase1, coneHeight1, coneZ1);
+        if (geo2 == "plane"){
+            geos[1].update(planeSize2, angle);
+            // geos[0].intersectPlane(geos[1].getNormal(), cylA1, cylB1, cylPhase1, pts);
+            // geos[0].unwrapPts(pts, unwrappedPts);
+        } else if (geo2 == "cylinder"){
+            geos[1].update(cylA2, cylB2, cylPhase2, cylHeight2, angle, cylX2);
+            // geos[0].intersectCylinder(cylA1, cylB1, cylPhase1, cylA2, cylB2, cylPhase2, cylX2, pts);
+            // geos[0].unwrapPts(pts, unwrappedPts);
+        } else if (geo2 == "cone"){
+            geos[1].update(coneA2, coneB2, conePhase2, coneHeight2, coneZ2, angle, coneX2);
         }
     }
     threeView.render();

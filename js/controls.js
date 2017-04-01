@@ -26,6 +26,10 @@ function initControls(){
         cylB1 = val;
         updateIntersection();
     });
+    setSliderInput("#cylinderPhase1", cylPhase1, 0, Math.PI*2, 0.1, function(val){
+        cylPhase1 = val;
+        updateIntersection();
+    });
     setSliderInput("#cylinderHeight1", cylHeight1, 100, 500, 1, function(val){
         cylHeight1 = val;
         updateIntersection();
@@ -38,12 +42,61 @@ function initControls(){
         cylB2 = val;
         updateIntersection();
     });
+    setSliderInput("#cylinderPhase2", cylPhase2, 0, Math.PI*2, 0.1, function(val){
+        cylPhase2 = val;
+        updateIntersection();
+    });
     setSliderInput("#cylinderHeight2", cylHeight2, 100, 500, 1, function(val){
         cylHeight2 = val;
         updateIntersection();
     });
     setSliderInput("#cylinderX2", cylX2, -100, 100, 0.1, function(val){
         cylX2 = val;
+        updateIntersection();
+    });
+
+    setSliderInput("#coneA1", coneA1, 0.1, 50, 0.1, function(val){
+        coneA1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneB1", coneB1, 0.1, 50, 0.1, function(val){
+        coneB1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#conePhase1", conePhase1, 0, Math.PI*2, 0.1, function(val){
+        conePhase1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneHeight1", coneHeight1, 100, 500, 1, function(val){
+        coneHeight1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneZ1", coneZ1, -100, 100, 0.1, function(val){
+        coneZ1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneA2", coneA2, 0.1, 50, 0.1, function(val){
+        coneA2 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneB2", coneB2, 0.1, 50, 0.1, function(val){
+        coneB2 = val;
+        updateIntersection();
+    });
+    setSliderInput("#conePhase2", conePhase2, 0, Math.PI*2, 0.1, function(val){
+        conePhase2 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneHeight2", coneHeight2, 100, 500, 1, function(val){
+        coneHeight2 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneX2", coneX2, -100, 100, 0.1, function(val){
+        coneX2 = val;
+        updateIntersection();
+    });
+    setSliderInput("#coneZ2", coneZ2, -100, 100, 0.1, function(val){
+        coneZ2 = val;
         updateIntersection();
     });
 
