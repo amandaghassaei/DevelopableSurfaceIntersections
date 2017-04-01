@@ -4,18 +4,22 @@
 
 var thetaNum = 100;
 var ptScale = 0.5;
-var angle = Math.PI/2;
+var angle = Math.PI/4;
 
+
+//plane params
 var planeSize1 = 500;
 var planeSize2 = planeSize1;
 
 
+//cylinder params
 var cylA1 = 16;
 var cylB1 = 10;
 var cylHeight1 = 200;
 var cylA2 = cylA1;
 var cylB2 = cylB1;
 var cylHeight2 = cylHeight1;
+var cylX2 = 0;//x offset
 
 
 var threeView;
@@ -124,7 +128,9 @@ function updateIntersection(){
             geos[0].intersectPlane(geos[1].getNormal(), cylA1, cylB1, pts);
             geos[0].unwrapPts(pts, unwrappedPts);
         } else if (geo2 == "cylinder"){
-            geos[1].update(cylA2, cylB2, cylHeight2, angle);
+            geos[1].update(cylA2, cylB2, cylHeight2, angle, cylX2);
+            geos[0].intersectCylinder(cylA1, cylB1, cylA2, cylB2, cylX2, pts);
+            geos[0].unwrapPts(pts, unwrappedPts);
         }
     }
     threeView.render();

@@ -42,6 +42,10 @@ function initControls(){
         cylHeight2 = val;
         updateIntersection();
     });
+    setSliderInput("#cylinderX2", cylX2, -100, 100, 0.1, function(val){
+        cylX2 = val;
+        updateIntersection();
+    });
 
 
     setSliderInput("#planeSize1", planeSize1, 100, 1000, 1, function(val){
