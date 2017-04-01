@@ -13,7 +13,23 @@ function initControls(){
         ptScale = val;
         updateIntersection();
     });
+    setSliderInput("#angle", angle, 0.0, Math.PI, 0.1, function(val){
+        angle = val;
+        updateIntersection();
+    });
 
+    setSliderInput("#cylinderA1", cylA1, 0.1, 50, 0.1, function(val){
+        cylA1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#cylinderB1", cylB1, 0.1, 50, 0.1, function(val){
+        cylB1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#cylinderHeight1", cylHeight1, 100, 500, 1, function(val){
+        cylHeight1 = val;
+        updateIntersection();
+    });
     setSliderInput("#cylinderA2", cylA2, 0.1, 50, 0.1, function(val){
         cylA2 = val;
         updateIntersection();
@@ -28,29 +44,23 @@ function initControls(){
     });
 
 
-    setSliderInput("#planeAngle1", planeAngle1, 0.0, Math.PI, 0.1, function(val){
-        planeAngle1 = val;
-        updateIntersection();
-    });
     setSliderInput("#planeSize1", planeSize1, 100, 1000, 1, function(val){
         planeSize1 = val;
+        updateIntersection();
+    });
+    setSliderInput("#planeSize2", planeSize2, 100, 1000, 1, function(val){
+        planeSize2 = val;
         updateIntersection();
     });
 
     setRadio("geo1", geo1, function(val){
         geo1 = val;
-        clear();
-        if (val == "plane"){
-
-        }
+        initGeos();
     });
 
     setRadio("geo2", geo2, function(val){
         geo2 = val;
-        clear();
-        if (val == "plane"){
-
-        }
+        initGeos();
     });
 
 

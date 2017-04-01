@@ -36,13 +36,17 @@
             <span class="label-slider">Size : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
             <input value="" placeholder="" class="form-control int" type="text">
         </div>
+        <div class="sliderInput" id="angle">
+            <span class="label-slider">Angle : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+            <input value="" placeholder="" class="form-control" type="text">
+        </div>
     </div>
 
     <div id="geo1">
-        <label class="radio">
-            <input name="geo1" value="plane" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
-            Plane
-        </label>
+        <!--<label class="radio">-->
+            <!--<input name="geo1" value="plane" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>-->
+            <!--Plane-->
+        <!--</label>-->
         <label class="radio">
             <input name="geo1" value="cylinder" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
             Cylinder
@@ -51,7 +55,7 @@
             <input name="geo1" value="cone" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
             Cone
         </label>
-    </div>
+    </div><br/>
     <div id="geo2">
         <label class="radio">
             <input name="geo2" value="plane" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
@@ -86,12 +90,25 @@
     <div id="plane2">
         <b>Plane Controls: </b>
         <div class="indent">
-            <div class="sliderInput" id="planeAngle2">
-                <span class="label-slider">Angle : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
-                <input value="" placeholder="" class="form-control" type="text">
-            </div>
             <div class="sliderInput" id="planeSize2">
                 <span class="label-slider">Size : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+                <input value="" placeholder="" class="form-control" type="text">
+            </div>
+        </div>
+    </div>
+    <div id="cylinder1">
+        <b>Cylinder Controls: </b>
+        <div class="indent">
+            <div class="sliderInput" id="cylinderA1">
+                <span class="label-slider">A : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+                <input value="" placeholder="" class="form-control" type="text">
+            </div>
+            <div class="sliderInput" id="cylinderB1">
+                <span class="label-slider">B : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
+                <input value="" placeholder="" class="form-control" type="text">
+            </div>
+            <div class="sliderInput" id="cylinderHeight1">
+                <span class="label-slider">Height : </span><div class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div>
                 <input value="" placeholder="" class="form-control" type="text">
             </div>
         </div>
