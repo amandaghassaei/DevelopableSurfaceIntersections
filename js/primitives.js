@@ -84,7 +84,8 @@ Cylinder.prototype.intersectPlane = function(normal, cylA, cylB, cylPhase, _pts)
 };
 
 Cylinder.prototype.intersectCylinder = function(_cylA1, _cylB1, _cylPhase1, _cylA2, _cylB2, _cylPhase2, _cylX2, _pts){
-    _cylPhase2 *= -1;
+    _cylPhase2 *= -1;//not sure why
+    var _angle = -angle;
     for (var i=0;i<thetaNum;i++){
         var theta = i/thetaNum*Math.PI*2;
         var pt = _pts[i];
@@ -96,18 +97,17 @@ Cylinder.prototype.intersectCylinder = function(_cylA1, _cylB1, _cylPhase1, _cyl
         var y = _x*Math.sin(_cylPhase1) + _y*Math.cos(_cylPhase1);
         //rotation cylinder 2 around z
         //-angle?  needed a neg sign on angle or whole expression, not sure where that's coming from
-
-
-        var z = 1/(Math.pow(Math.sin(-angle),2) * (_cylA2*_cylA2*Math.pow(Math.cos(_cylPhase2), 2) + _cylB2*_cylB2*Math.pow(Math.sin(_cylPhase2), 2)))
-        *(-Math.sqrt(_cylA2*_cylA2*_cylB2*_cylB2*Math.pow(Math.sin(-angle), 2)*
+        x = x-_cylX2;//translation
+        var z = 1/(Math.pow(Math.sin(_angle),2) * (_cylA2*_cylA2*Math.pow(Math.cos(_cylPhase2), 2) + _cylB2*_cylB2*Math.pow(Math.sin(_cylPhase2), 2)))
+        *(-Math.sqrt(_cylA2*_cylA2*_cylB2*_cylB2*Math.pow(Math.sin(_angle), 2)*
                 (_cylA2*_cylA2*Math.pow(Math.cos(_cylPhase2), 2) + _cylB2*_cylB2*Math.pow(Math.sin(_cylPhase2), 2)
                 - x*x*Math.pow(Math.sin(_cylPhase2), 4) - x*x*Math.pow(Math.cos(_cylPhase2), 4)
                 -2*x*x*Math.pow(Math.sin(_cylPhase2), 2)*Math.pow(Math.cos(_cylPhase2), 2)))
-                + _cylA2*_cylA2*x*Math.sin(-angle)*Math.sin(_cylPhase2)*Math.cos(_cylPhase2)
-                + _cylA2*_cylA2*y*Math.sin(-angle)*Math.cos(-angle)*Math.pow(Math.cos(_cylPhase2), 2)
-                -_cylB2*_cylB2*x*Math.sin(-angle)*Math.sin(_cylPhase2)*Math.cos(_cylPhase2)
-                + _cylB2*_cylB2*y*Math.sin(-angle)*Math.cos(-angle)*Math.pow(Math.sin(_cylPhase2), 2));
-        pt.position.set(x, y, z);
+                + _cylA2*_cylA2*x*Math.sin(_angle)*Math.sin(_cylPhase2)*Math.cos(_cylPhase2)
+                + _cylA2*_cylA2*y*Math.sin(_angle)*Math.cos(_angle)*Math.pow(Math.cos(_cylPhase2), 2)
+                -_cylB2*_cylB2*x*Math.sin(_angle)*Math.sin(_cylPhase2)*Math.cos(_cylPhase2)
+                + _cylB2*_cylB2*y*Math.sin(_angle)*Math.cos(_angle)*Math.pow(Math.sin(_cylPhase2), 2));
+        pt.position.set(x+_cylX2, y, z);
 
         //with _cylPhase = 0, simplifies to:
         // pt.position.set(x, y, (Math.cos(-angle)*y-_cylB2*Math.sqrt(1-(x-_cylX2)*(x-_cylX2)/(_cylA2*_cylA2)))/Math.sin(-angle));
