@@ -28,13 +28,13 @@ var coneA1 = 20;
 var coneB1 = coneA1;
 var conePhase1 = 0;
 var coneHeight1 = 200;
-var coneZ1 = 0;//y offset
+var coneZ1 = 0;//z offset
 var coneA2 = coneA1;
 var coneB2 = coneB1;
 var conePhase2 = conePhase1;
 var coneHeight2 = coneHeight1;
 var coneX2 = 0;//x offset
-var coneZ2 = 0;//y offset
+var coneZ2 = 0;//z offset
 
 var threeView;
 
@@ -157,16 +157,17 @@ function updateIntersection(){
             geos[0].unwrapPts(pts, unwrappedPts);
         } else if (geo2 == "cone"){
             geos[1].update(coneA2, coneB2, conePhase2, coneHeight2, coneZ2, angle, coneX2);
+            geos[0].intersectCone(cylA1, cylB1, cylPhase1, coneA2, coneB2, coneHeight2, conePhase2, coneZ2, coneX2, pts);
+            geos[0].unwrapPts(pts, unwrappedPts);
         }
     } else if (geo1 == "cone"){
         geos[0].update(coneA1, coneB1, conePhase1, coneHeight1, coneZ1);
         if (geo2 == "plane"){
             geos[1].update(planeSize2, angle);
-            // geos[0].intersectPlane(geos[1].getNormal(), cylA1, cylB1, cylPhase1, pts);
+            geos[0].intersectPlane(geos[1].getNormal(), coneA1, coneB1, coneHeight1, conePhase1, coneZ1, pts);
             // geos[0].unwrapPts(pts, unwrappedPts);
         } else if (geo2 == "cylinder"){
             geos[1].update(cylA2, cylB2, cylPhase2, cylHeight2, angle, cylX2);
-            // geos[0].intersectCylinder(cylA1, cylB1, cylPhase1, cylA2, cylB2, cylPhase2, cylX2, pts);
             // geos[0].unwrapPts(pts, unwrappedPts);
         } else if (geo2 == "cone"){
             geos[1].update(coneA2, coneB2, conePhase2, coneHeight2, coneZ2, angle, coneX2);

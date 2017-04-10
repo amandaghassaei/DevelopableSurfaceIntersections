@@ -114,6 +114,26 @@ Cylinder.prototype.intersectCylinder = function(_cylA1, _cylB1, _cylPhase1, _cyl
     }
 };
 
+Cylinder.prototype.intersectCone = function(_cylA1, _cylB1, _cylPhase1, _coneA2, _coneB2, _coneHeight2, _conePhase2, _coneZ2, _coneX2, _pts){
+    var _angle = -angle;
+    for (var i=0;i<thetaNum;i++){
+        var theta = i/thetaNum*Math.PI*2;
+        var pt = _pts[i];
+        pt.scale.set(ptScale, ptScale, ptScale);
+
+        var _x = _cylA1*Math.cos(theta);
+        var _y = _cylB1*Math.sin(theta);
+        //rotation cylinder 1 around z
+        var x = _x*Math.cos(_cylPhase1) - _y*Math.sin(_cylPhase1);
+        var y = _x*Math.sin(_cylPhase1) + _y*Math.cos(_cylPhase1);
+        var z = _coneHeight2*(_coneA2-2*x/Math.cos(theta))/(2*_coneA2);
+        pt.position.set(x, y, z);
+
+        //with _cylPhase = 0, simplifies to:
+        // pt.position.set(x, y, (Math.cos(-angle)*y-_cylB2*Math.sqrt(1-(x-_cylX2)*(x-_cylX2)/(_cylA2*_cylA2)))/Math.sin(-angle));
+    }
+};
+
 Cylinder.prototype.unwrapPts = function(_pts, _unwrappedPts){
     var xPos = 0;
     for (var i=0;i<thetaNum;i++){
@@ -173,15 +193,24 @@ Cone.prototype.update = function(coneA, coneB, phase, coneHeight, coneZ, coneAng
     if (coneZ != undefined) this.object3D.position.z = coneZ;
 };
 
-Cone.prototype.intersectPlane = function(normal, coneA, coneB, conePhase, _pts){
-    // for (var i=0;i<thetaNum;i++){
-    //     var theta = i/thetaNum*Math.PI*2;
-    //     var pt = _pts[i];
-    //     pt.scale.set(ptScale, ptScale, ptScale);
-    //
-    //     var _x = Math.sqrt()
-    //     pt.position.set(_x, _y, -(normal.x*_x + normal.y*_y)/normal.z);
-    // }
+Cone.prototype.intersectPlane = function(normal, coneA, coneB, coneHeight, conePhase, coneZ, _pts){
+    for (var i=0;i<thetaNum;i++){
+        var theta = i/thetaNum*Math.PI*2;
+        var pt = _pts[i];
+        pt.scale.set(ptScale, ptScale, ptScale);
+
+        //wolfram alpha
+        //x = (h+(a*x+b*y)/c-h/2+z)/h*A*cos(theta) solve for y
+        //y = (h+(a*x+b*y)/c-h/2+z)/h*B*sin(theta) solve for y
+        //-(2*a*A*x+c*A*(h+2*z) - 2*c*h*x*sec(theta))/(2*b*A) = (B*sin(theta)*(2*a*x+c*(h-2*z))/(2*c*h-2*b*B*sin(theta)))  solve for x
+        //-(2*a*A*x+c*h*A- 2*c*h*x*sec(theta))/(2*b*A) = (B*sin(theta)*(2*a*x+c*(h))/(2*c*h-2*b*B*sin(theta)))  solve for x
+        var _x = coneA*normal.z*coneHeight/(2*(normal.x*coneA + normal.y*coneB*Math.tan(theta) - normal.z*coneHeight*1/Math.cos(theta)));
+        var _y = coneB*Math.sin(theta)*(2*normal.x*_x+normal.z*coneHeight)/(2*normal.z*coneHeight - 2*normal.y*coneB*Math.sin(theta));
+        //rotation around z - not working yet
+        var x = _x*Math.cos(conePhase) - _y*Math.sin(conePhase);
+        var y = _x*Math.sin(conePhase) + _y*Math.cos(conePhase);
+        pt.position.set(x, y, -(normal.x*x + normal.y*y)/normal.z);
+    }
 };
 
 Cone.prototype.destroy = function(){
