@@ -97,6 +97,9 @@ Cylinder.prototype.intersectCylinder = function(_cylA1, _cylB1, _cylPhase1, _cyl
         var y = _x*Math.sin(_cylPhase1) + _y*Math.cos(_cylPhase1);
         //rotation cylinder 2 around z
         //-angle?  needed a neg sign on angle or whole expression, not sure where that's coming from
+
+        //x*x/(A*A) + (cos(alpha)*y-sin(alpha)*z)^2/(B*B) = 1 solve for z
+
         x = x-_cylX2;//translation
         var z = 1/(Math.pow(Math.sin(_angle),2) * (_cylA2*_cylA2*Math.pow(Math.cos(_cylPhase2), 2) + _cylB2*_cylB2*Math.pow(Math.sin(_cylPhase2), 2)))
         *(-Math.sqrt(_cylA2*_cylA2*_cylB2*_cylB2*Math.pow(Math.sin(_angle), 2)*
@@ -123,14 +126,35 @@ Cylinder.prototype.intersectCone = function(_cylA1, _cylB1, _cylPhase1, _coneA2,
 
         var _x = _cylA1*Math.cos(theta);
         var _y = _cylB1*Math.sin(theta);
+
+        // x*x/(A*A) + (cos(alpha)*y-sin(alpha)*z)^2/(B*B) = h/(h-z-h/2) solve for z
+
         //rotation cylinder 1 around z
         var x = _x*Math.cos(_cylPhase1) - _y*Math.sin(_cylPhase1);
         var y = _x*Math.sin(_cylPhase1) + _y*Math.cos(_cylPhase1);
-        var z = _coneHeight2*(_coneA2-2*x/Math.cos(theta))/(2*_coneA2);
-        pt.position.set(x, y, z);
+        //x = (h-u)/h*A*cos(theta) solve for u`````
+        // var u = _coneHeight2 - (_coneHeight2*x/Math.cos(theta))/_coneA2;
+        // var z = (_coneHeight2-u)/_coneHeight2*_coneB2*Math.sin(theta)*Math.sin(_angle) + (u-_coneHeight2/2)*Math.cos(_angle);
 
-        //with _cylPhase = 0, simplifies to:
-        // pt.position.set(x, y, (Math.cos(-angle)*y-_cylB2*Math.sqrt(1-(x-_cylX2)*(x-_cylX2)/(_cylA2*_cylA2)))/Math.sin(-angle));
+        // x*x/(A*A) + (cos(alpha)*y-sin(alpha)*z)^2/(B*B) = ((h-sin(alpha)*y-cos(alpha)*z)/h)^2 solve for z
+        // var z = -(1/Math.sin(_angle)/Math.cos(_angle)*(_coneA2*_coneA2*_coneHeight2*_coneHeight2*Math.sin(_angle)*Math.sin(_angle) -
+        //     4*_coneA2*_coneA2*_coneHeight2*Math.pow(Math.sin(_angle), 3) + 4*_coneA2*_coneA2*y*y*Math.pow(Math.sin(_angle), 4) -
+        //     4*_coneA2*_coneA2*y*y*Math.pow(Math.cos(_angle), 4) - 4*_coneHeight2*_coneHeight2*x*x*Math.sin(_angle)*Math.sin(_angle)))/
+        //     (4*_coneA2*_coneA2*(-_coneHeight2*Math.sin(_angle) + 2*y*Math.sin(_angle)*Math.sin(_angle) +
+        //     2*y*Math.cos(_angle)*Math.cos(_angle)));
+
+        var A = _coneA2;
+        var B = _coneB2;
+        var h = _coneHeight2;
+        var sinalpha = Math.sin(_angle);
+        var cosalpha = Math.cos(_angle);
+        var z = (-Math.sqrt((A*A*B*B*h*h*(A*A*h*h*sinalpha*sinalpha-2*A*A*h*y*sinalpha*sinalpha*sinalpha -
+            2*A*A*h*y*sinalpha*cosalpha*cosalpha + A*A*y*y*Math.pow(sinalpha, 4) +
+            A*A*y*y*Math.pow(cosalpha, 4) + 2*A*A*y*y*sinalpha*sinalpha*cosalpha*cosalpha +
+            B*B*x*x*cosalpha*cosalpha - h*h*x*x*sinalpha*sinalpha))) - A*A*B*B*h*cosalpha*cosalpha +
+            A*A*B*B*y*sinalpha*cosalpha + A*A*h*h*y*sinalpha*cosalpha)/(A*A*(h*h*sinalpha*sinalpha-B*B*cosalpha*cosalpha));
+
+        pt.position.set(x, y, z);
     }
 };
 
@@ -202,7 +226,10 @@ Cone.prototype.intersectPlane = function(normal, coneA, coneB, coneHeight, coneP
         //wolfram alpha
         //x = (h+(a*x+b*y)/c-h/2+z)/h*A*cos(theta) solve for y
         //y = (h+(a*x+b*y)/c-h/2+z)/h*B*sin(theta) solve for y
+
         //-(2*a*A*x+c*A*(h+2*z) - 2*c*h*x*sec(theta))/(2*b*A) = (B*sin(theta)*(2*a*x+c*(h-2*z))/(2*c*h-2*b*B*sin(theta)))  solve for x
+        //-(2*a*A*x*cos(phi)+c*A*(h+2*z) - 2*c*h*x*sec(theta))/(2*b*A) = (B*sin(theta)*(2*a*x+c*(h-2*z))/(2*c*h-2*b*B*sin(theta)))  solve for x
+        ///wolfram won't compute above, so remove coneZ:
         //-(2*a*A*x+c*h*A- 2*c*h*x*sec(theta))/(2*b*A) = (B*sin(theta)*(2*a*x+c*(h))/(2*c*h-2*b*B*sin(theta)))  solve for x
         var _x = coneA*normal.z*coneHeight/(2*(normal.x*coneA + normal.y*coneB*Math.tan(theta) - normal.z*coneHeight*1/Math.cos(theta)));
         var _y = coneB*Math.sin(theta)*(2*normal.x*_x+normal.z*coneHeight)/(2*normal.z*coneHeight - 2*normal.y*coneB*Math.sin(theta));
