@@ -132,7 +132,7 @@ Cylinder.prototype.intersectCone = function(_cylA1, _cylB1, _cylPhase1, _coneA2,
         //rotation cylinder 1 around z
         var x = _x*Math.cos(_cylPhase1) - _y*Math.sin(_cylPhase1);
         var y = _x*Math.sin(_cylPhase1) + _y*Math.cos(_cylPhase1);
-        //x = (h-u)/h*A*cos(theta) solve for u`````
+        //x = (h-u)/h*A*cos(theta) solve for u
         // var u = _coneHeight2 - (_coneHeight2*x/Math.cos(theta))/_coneA2;
         // var z = (_coneHeight2-u)/_coneHeight2*_coneB2*Math.sin(theta)*Math.sin(_angle) + (u-_coneHeight2/2)*Math.cos(_angle);
 
@@ -148,11 +148,11 @@ Cylinder.prototype.intersectCone = function(_cylA1, _cylB1, _cylPhase1, _coneA2,
         var h = _coneHeight2;
         var sinalpha = Math.sin(_angle);
         var cosalpha = Math.cos(_angle);
-        var z = (-Math.sqrt((A*A*B*B*h*h*(A*A*h*h*sinalpha*sinalpha-2*A*A*h*y*sinalpha*sinalpha*sinalpha -
-            2*A*A*h*y*sinalpha*cosalpha*cosalpha + A*A*y*y*Math.pow(sinalpha, 4) +
-            A*A*y*y*Math.pow(cosalpha, 4) + 2*A*A*y*y*sinalpha*sinalpha*cosalpha*cosalpha +
-            B*B*x*x*cosalpha*cosalpha - h*h*x*x*sinalpha*sinalpha))) - A*A*B*B*h*cosalpha*cosalpha +
-            A*A*B*B*y*sinalpha*cosalpha + A*A*h*h*y*sinalpha*cosalpha)/(A*A*(h*h*sinalpha*sinalpha-B*B*cosalpha*cosalpha));
+        var z = (-Math.sqrt((A*A*B*B*h*h*(A*A*h*h*sinalpha*sinalpha-4*A*A*h*y*sinalpha*sinalpha*sinalpha -
+            4*A*A*h*y*sinalpha*cosalpha*cosalpha + 4*A*A*y*y*Math.pow(sinalpha, 4) +
+            4*A*A*y*y*Math.pow(cosalpha, 4) + 8*A*A*y*y*sinalpha*sinalpha*cosalpha*cosalpha +
+            4*B*B*x*x*cosalpha*cosalpha - 4*h*h*x*x*sinalpha*sinalpha))) - A*A*B*B*h*cosalpha*cosalpha +
+            2*A*A*B*B*y*sinalpha*cosalpha + 2*A*A*h*h*y*sinalpha*cosalpha)/(2*A*A*(h*h*sinalpha*sinalpha-B*B*cosalpha*cosalpha));
 
         pt.position.set(x, y, z);
     }
